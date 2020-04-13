@@ -15,7 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+from django.conf.urls import include
+from rest_framework import routers
+from django.contrib import admin
+from rest_framework_jwt.views import obtain_jwt_token
+#
+from users import views
+#定义路由
+route = routers.DefaultRouter()
+
+#注册新的路由地址(路由到某个序列化的类)
+route.register(r'users',views.UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^login/', obtain_jwt_token),
+    url('api/',include(route.urls))
 ]
