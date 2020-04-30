@@ -20,16 +20,26 @@ from django.conf.urls import include
 from rest_framework import routers
 from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token
+from django.conf import settings
+from django.conf.urls.static import static
 #
-from users import views
+
 #定义路由
 route = routers.DefaultRouter()
-
 #注册新的路由地址(路由到某个序列化的类)
+from users import views
 route.register(r'users',views.UserViewSet)
+from activity import views
+route.register(r'activities',views.ActivityViewSet)
+from reward import views
+route.register(r'rewards',views.RewardViewSet)
+from user_has_activity import views
+route.register(r'hasac',views.HasacViewSet)
+from user_has_reward import views
+route.register(r'hasrd',views.HasrdViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^login/', obtain_jwt_token),
     url('api/',include(route.urls))
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
