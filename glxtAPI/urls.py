@@ -38,8 +38,10 @@ route.register(r'hasac',views.HasacViewSet)
 from user_has_reward import views
 route.register(r'hasrd',views.HasrdViewSet)
 
+from users import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^login/', obtain_jwt_token),
-    url('api/',include(route.urls))
+    url('api/',include(route.urls)),
+    url('xg_pd/',views.put),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

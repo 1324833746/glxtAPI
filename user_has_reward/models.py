@@ -8,5 +8,6 @@ class user_has_reward(models.Model):
     reward_time = models.DateTimeField(auto_now_add=True)
     finish = models.BooleanField(default=0)
     finish_time = models.DateTimeField()
+    num = models.IntegerField(default=1)
     class Meta:
         db_table = 'user_has_reward'

@@ -8,6 +8,8 @@ from rest_framework_jwt.authentication import jwt_decode_handler
 from .models import User
 from rest_framework import viewsets
 from .serializers import UserSerializers
+from django.contrib.auth.hashers import make_password, check_password
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,10 +22,9 @@ class UserViewSet(viewsets.ModelViewSet):
         def get(self, request):
             token = request.META.get('HTTP_AUTHORIZATION')[4:]
             token_user = jwt_decode_handler(token)
-            print(token_user)
             if token_user:#如果验证通过
                 user_id = token_user['user_id']  # 获取用户id
-                print(self.request.data)
+
                 #
                 dic = {}
                 get_token = self.request.query_params.get('token')
@@ -54,3 +55,22 @@ class UserViewSet(viewsets.ModelViewSet):
             # 参数2: detail  当前是否方法是否属于详情页视图，
             #        False，系统不会自动增加pk在生成的路由地址中
             #        True  则系统会自动增加pk在生成的路由地址
+
+        @action(methods=['post'], detail=False)
+        def post(self, request):
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            User.objects.create_user(username=username,password=password)
+            return Response("ok")
+from django.http import HttpResponse
+def put(request):
+            id  = request.POST.get("id")
+            old_password = request.POST.get("old_password")
+            new_password = request.POST.get("new_password")
+            user = User.objects.get(pk=id)
+            ret = user.check_password(old_password)
+            if(True):
+                user.set_password(new_password)
+                user.save()
+                return HttpResponse("ok")
+            return HttpResponse("error")

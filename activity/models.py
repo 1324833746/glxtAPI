@@ -4,7 +4,7 @@ from django.db import models
 from django.db import models
 class Activity(models.Model):
     activity_name = models.CharField(max_length=45)
-    activity_content = models.CharField(max_length=200)
+    activity_content = models.TextField(max_length=2000)
     activity_join = models.IntegerField()
     activity_deadline = models.DateTimeField()
     activity_num = models.IntegerField()
